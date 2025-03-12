@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  trading_env:
+    image: continuumio/anaconda3:latest
+    container_name: trading_env
+    volumes:
+      - .:/app
+    working_dir: /app
+    tty: true
+    command: /bin/bash
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on: []
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "4g"
+    ports:
+      - "8888:8888"  # Caso queira rodar o Jupyter Notebook
+    stdin_open: true
+    entrypoint: ["/bin/bash", "-c", "pip install --upgrade pip && pip install ccxt pandas_ta ta && tail -f /dev/null"]
